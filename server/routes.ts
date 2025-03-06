@@ -1,28 +1,37 @@
 import express, { Request, Response } from "express";
 import path from "path";
-import { getNews,getNewsBySlug } from "./newsService";
+import { News, getAllNews, getNewsBySlug } from "./services/newsService";
+import { promises } from "dns";
 
 const router = express.Router();
 
 /**
  * GET / - Laadt de homepagina
  */
-router.get("/", (req: Request, res: Response): void => {
-    const items = getNews();
+router.get("/", async(req: Request, res: Response) => {
+    const news = await getAllNews();
     res.render("index", { 
         title: "News",
-        items: items
+        news
     });
 });
 
-router.get("/details/:slug",  (req: Request, res: Response): void => {
+router.get("/details/:slug", async (req: Request, res: Response) => {
     const slug = req.params.slug;
-    const news = getNewsBySlug(slug);
-    // if news === undefined : redirect to 404
+    const news = await getNewsBySlug(slug);
     res.render("details", {
         title: "News details",
-        news: news
+        news
     });
 });
+
+
+router.get("/news", async (req: Request, res: Response) => {
+  const news: News[] = await getAllNews();
+
+  res.render("news", { news, title: "Recent nieuws" });
+});
+
+
 
 export default router;
