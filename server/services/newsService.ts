@@ -29,12 +29,16 @@ export async function getAllNews(): Promise<News[]> {
     }
 }
 
-export async function getNewsBySlug(slug: string): Promise<News[]> {
+export async function getNewsBySlug(slug: string): Promise<News> {
     try {
-        const data : News[] = await sql`select * from news where slug = ${slug}`;
-        console.log(data);
+        const data: News[] = await sql`SELECT * FROM news WHERE slug = ${slug} LIMIT 1`; // Explicitly passing parameter
+        console.log('Query Result:', data);
         
-        return data;
+        if (data.length === 0) {
+            console.warn('No news found for slug:', slug);
+        }
+        
+        return data[0];
 
     } catch (error) {
         console.error('Error fetching news:', error);

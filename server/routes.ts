@@ -18,18 +18,10 @@ router.get("/", async(req: Request, res: Response) => {
 
 router.get("/details/:slug", async (req: Request, res: Response) => {
     const slug = req.params.slug;
-    const news = await getNewsBySlug(slug);
+    console.log(slug);
+    const newsArticleSlug = await getNewsBySlug(slug);
     res.render("details", {
-        title: "News details",
-        news
-    });
-});
-
-
-router.get("/news", async (req: Request, res: Response) => {
-  const news: News[] = await getAllNews();
-
-  res.render("news", { news, title: "Recent nieuws" });
+        title: "News details", news: newsArticleSlug});
 });
 
 
