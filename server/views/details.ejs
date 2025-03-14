@@ -1,3 +1,9 @@
 <p>title: <%= news?.title %></p>
 <p>content: <%= news?.content %></p>
 <p>date: <%= news?.date %></p>
+<h1>Comments</h1>
+<% comments.forEach((item) => { %>
+    <ul>
+      <li><%= item.author %><br><%= item.comment %><br><%= item.created_at %></li>
+    </ul>
+    <% }) %>
